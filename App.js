@@ -1,15 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
+import { setStatusBarBackgroundColor, StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 
 export default function App() {
 
-  const [display, setDisplay] = useState('0')
 
-  function updateDisplay(num){
-    return setDisplay( )
+
+  const [display, setDisplay] = useState('');
+  const [result, setResult] = useState(null);
+
+  function updateDisplay(value) {
+    if (value === '=') {
+      try {
+        const evalResult = eval(display);
+        console.log(evalResult);
+
+        setDisplay(evalResult);
+      } catch (error) {
+        setResult('Erro de cálculo')
+        setDisplay('0')
+      }
+    } else {
+      const newDisplay = display + value
+      setDisplay(newDisplay)
+
+      console.log("display: " + newDisplay)
+    }
   }
+
 
   return (
     <View style={styles.container}>
@@ -18,61 +37,64 @@ export default function App() {
       </View>
       <View>
         <View style={styles.linha}>
-          <TouchableOpacity onPress={()=> updateDisplay(7)}>
+          <TouchableOpacity onPress={() => updateDisplay('7')}>
             <Text style={styles.row}>7</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=> updateDisplay(8)}>
+          <TouchableOpacity onPress={() => updateDisplay('8')}>
             <Text style={styles.row}>8</Text>
           </TouchableOpacity >
-          <TouchableOpacity onPress={()=> updateDisplay(9)}>
+          <TouchableOpacity onPress={() => updateDisplay('9')}>
             <Text style={styles.row}>9</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => updateDisplay('/')}>
             <Text style={styles.row}>/</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.linha}>
-          <TouchableOpacity onPress={()=> updateDisplay(4)}>
+          <TouchableOpacity onPress={() => updateDisplay('4')}>
             <Text style={styles.row}>4</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=> updateDisplay(5)}>
+          <TouchableOpacity onPress={() => updateDisplay('5')}>
             <Text style={styles.row}>5</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=> updateDisplay(6)}>
+          <TouchableOpacity onPress={() => updateDisplay('6')}>
             <Text style={styles.row}>6</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => updateDisplay('*')}>
             <Text style={styles.row}>*</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.linha}>
-          <TouchableOpacity onPress={()=> updateDisplay(1)}>
+          <TouchableOpacity onPress={() => updateDisplay('1')}>
             <Text style={styles.row}>1</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=> updateDisplay(2)}>
+          <TouchableOpacity onPress={() => updateDisplay('2')}>
             <Text style={styles.row}>2</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=> updateDisplay(3)}>
+          <TouchableOpacity onPress={() => updateDisplay('3')}>
             <Text style={styles.row}>3</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => updateDisplay('-')}>
             <Text style={styles.row}>-</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.linha}>
-          <TouchableOpacity onPress={()=> updateDisplay(0)}>
+          <TouchableOpacity onPress={() => updateDisplay('0')}>
             <Text style={styles.row}>0</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.row}>√</Text>
+          <TouchableOpacity onPress={() => updateDisplay('√')}>
+            <Text style={styles.row} >√</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => updateDisplay('=')}>
             <Text style={styles.row}>=</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => updateDisplay('+')}>
             <Text style={styles.row}>+</Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={() => setDisplay('')}>
+            <Text style={styles.row}>CE</Text>
+          </TouchableOpacity>
       </View>
     </View>
   );
@@ -84,7 +106,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    
+
   },
   linha: {
     display: 'flex',
@@ -102,11 +124,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000ff',
     width: 300,
     padding: 30,
+    
   },
   teclado: {
     marginTop: 10
   },
   digito: {
-    color: '#FFFFFF'
+    color: '#FFFFFF',
+    textAlign: 'right'
+  },
+  botao: {
+    width: 300,
   }
 });
