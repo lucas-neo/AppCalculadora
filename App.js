@@ -5,22 +5,24 @@ import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function App() {
 
-
-
   const [display, setDisplay] = useState('');
   const [result, setResult] = useState(null);
 
   function updateDisplay(value) {
+
     if (value === '=') {
-      try {
+      
+        // 534895
+        if (display.includes('√')) {
+          const novo = display.replace('√', '')
+          setDisplay(novo ** (1/2));
+        }
+
         const evalResult = eval(display);
         console.log(evalResult);
 
         setDisplay(evalResult);
-      } catch (error) {
-        setResult('Erro de cálculo')
-        setDisplay('0')
-      }
+      
     } else {
       const newDisplay = display + value
       setDisplay(newDisplay)
@@ -28,7 +30,6 @@ export default function App() {
       console.log("display: " + newDisplay)
     }
   }
-
 
   return (
     <View style={styles.container}>
@@ -93,8 +94,8 @@ export default function App() {
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={() => setDisplay('')}>
-            <Text style={styles.row}>CE</Text>
-          </TouchableOpacity>
+          <Text style={styles.row}>CE</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -121,17 +122,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 27,
   },
   display: {
-    backgroundColor: '#000000ff',
+
     width: 300,
     padding: 30,
-    
+
   },
   teclado: {
     marginTop: 10
   },
-  digito: {
-    color: '#FFFFFF',
-    textAlign: 'right'
+  digito: { 
+    textAlign: 'right',
+    fontSize: 40
   },
   botao: {
     width: 300,
